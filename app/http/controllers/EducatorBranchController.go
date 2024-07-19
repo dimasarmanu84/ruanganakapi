@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"fmt"
+	"net/http"
 
 	pagination "github.com/Hironaga06/gorm-pagination"
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ type EducatorBranchController struct {
 	db *gorm.DB
 }
 
-func NewEducatorBranchControllerr() *EducatorBranchController {
+func NewEducatorBranchController() *EducatorBranchController {
 	return &EducatorBranchController{
 		db: app.DB,
 	}
@@ -39,8 +40,12 @@ func (ctrl EducatorBranchController) DataTable(c *gin.Context) {
 		query = query.Where("LOWER(full_name) ILIKE  ?", "%"+datatable["search"].(string)+"%")
 	}
 
-	if datatable["branch_id"] != nil {
-		query = query.Where("branch_id::TEXT ILIKE ?", "%"+datatable["branch_id"].(string)+"%")
+	if datatable["childname"] != nil {
+		query = query.Where("LOWER(full_name) ILIKE  ?", "%"+datatable["childname"].(string)+"%")
+	}
+
+	if datatable["branchid"] != nil {
+		query = query.Where("branch_id::TEXT ILIKE ?", "%"+datatable["branchid"].(string)+"%")
 	}
 
 	query.Find(&educator)
@@ -57,4 +62,19 @@ func (ctrl EducatorBranchController) DataTable(c *gin.Context) {
 		return
 	}
 	c.JSON(200, result)
+}
+
+func (ctrl EducatorBranchController) GetBranch(c *gin.Context) {
+	response := new(models.Response)
+	var educatorbranch []models.ViewEducatorBranch
+
+	if err := ctrl.db.Select("*").Table("sch_vw_educator_branch").Where("educator_id::text = ?", c.Param("id")).Find(&educatorbranch).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Record not found!"})
+		return
+	}
+
+	response.Status = http.StatusOK // if the post is created successfully, return a success response
+	response.Message = "Success"
+	response.Data = &educatorbranch
+	c.JSON(200, response)
 }

@@ -11,11 +11,9 @@ type ViewChildTimesheetOvertime struct {
 	ClockIn       string `json:"clock_in"`
 	ClockOut      string `json:"clock_out"`
 	TotalOvertime string `json:"total_overtime"`
-	OvertimeIn    string `json:"overtimein"`
-	OvertimeOut   string `json:"overtimeout"`
 }
 
 // TableName TmpMstRole's table name
 func (*ViewChildTimesheetOvertime) TableName() string {
-	return ViewNameTimesheetChild
+	return ViewNameTimesheetChildOvertime
 }

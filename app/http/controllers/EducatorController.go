@@ -39,8 +39,12 @@ func (ctrl EducatorController) DataTable(c *gin.Context) {
 		query = query.Where("LOWER(full_name) ILIKE  ?", "%"+datatable["search"].(string)+"%")
 	}
 
-	if datatable["branch_id"] != nil {
-		query = query.Where("branch_id::TEXT ILIKE ?", "%"+datatable["branch_id"].(string)+"%")
+	if datatable["childname"] != nil {
+		query = query.Where("LOWER(full_name) ILIKE  ?", "%"+datatable["childname"].(string)+"%")
+	}
+
+	if datatable["branchid"] != nil {
+		query = query.Where("branch_id::TEXT ILIKE ?", "%"+datatable["branchid"].(string)+"%")
 	}
 
 	query.Find(&educator)

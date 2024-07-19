@@ -31,7 +31,7 @@ func (ctrl InvoiceController) Generate(c *gin.Context) {
 		return
 	}
 	postdata := JsonToArray(jsonData)
-	if err := ctrl.db.Select("*,to_char(child_dob, 'DD-MM-YYYY') as child_dob").Table("peo_vw_child").Where("branch_id::text = ?", postdata["branch_id"]).Scan(&child).Error; err != nil {
+	if err := ctrl.db.Table("peo_vw_child").Where("branch_id::text = ?", postdata["branch_id"]).Scan(&child).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": true, "Record  child not found!": err.Error(), "data": nil})
 		return
 	}
