@@ -6,6 +6,7 @@ import (
 
 	pagination "github.com/Hironaga06/gorm-pagination"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/uzzalhcse/go-gin-gorm-mvc-boilerplate/app/models"
 	"github.com/uzzalhcse/go-gin-gorm-mvc-boilerplate/bootstrap/app"
 	"gorm.io/gorm"
@@ -77,4 +78,26 @@ func (ctrl EducatorBranchController) GetBranch(c *gin.Context) {
 	response.Message = "Success"
 	response.Data = &educatorbranch
 	c.JSON(200, response)
+}
+
+func (ctrl EducatorBranchController) Create(c *gin.Context) {
+
+	uuid, err := uuid.NewRandom()
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to generate UUID"})
+		return
+	}
+
+	educatorbranch := new(models.SchTrxEducatorBranch)
+	if err := c.ShouldBindJSON(&educatorbranch); err != nil {
+		c.JSON(http.StatusOK, gin.H{"error": true, "message": err.Error(), "data": nil})
+		return
+	}
+	educatorbranch.EducatorBranchID = uuid.String()
+
+	if err := ctrl.db.Create(&educatorbranch).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Success", "data": &educatorbranch})
 }

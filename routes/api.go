@@ -108,5 +108,6 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 	educatorbranchController := router.Group("/educatorbranch")
 	{
 		educatorbranchController.GET("/branch/:id", EducatorBranchController.GetBranch)
+		educatorbranchController.POST("/insert", EducatorBranchController.Create)
 	}
 }
