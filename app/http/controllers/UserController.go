@@ -106,7 +106,7 @@ func (ctrl UserController) UpdateOTP(c *gin.Context) {
 		return
 	}
 
-	if err = ctrl.db.Table("app_mst_user").Where("user_phone = ?", id).Updates(map[string]interface{}{"user_otp": codeInt, "user_device": nil}).Error; err != nil {
+	if err = ctrl.db.Table("app_mst_user").Where("user_phone = ?", id).Updates(map[string]interface{}{"user_otp": codeInt, "user_device": nil, "user_session": nil}).Error; err != nil {
 		c.JSON(http.StatusOK, gin.H{"error": true, "message": "Success", "data": &err})
 		return
 	}

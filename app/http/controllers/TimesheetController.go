@@ -50,7 +50,7 @@ func (ctrl TimesheetController) Edit(c *gin.Context) {
 
 	// var query *gorm.DB
 
-	if err := ctrl.db.Select("*, to_char(clock_in, 'HH:mi:ss') as clock_in,to_char(clock_out, 'HH:mi:ss') as clock_out").Table("v_timesheet_child_overtime").Where("child_id::text = ?", postdata["child_id"]).Where("v_timesheet_child_overtime.date BETWEEN ? AND ?", postdata["start_date"], postdata["end_date"]).Scan(&timesheet).Error; err != nil {
+	if err := ctrl.db.Select("*, to_char(date, 'DD-MM-YYYY') AS date ,to_char(clock_in, 'HH:mi:ss') as clock_in,to_char(clock_out, 'HH:mi:ss') as clock_out").Table("v_timesheet_child_overtime").Where("child_id::text = ?", postdata["child_id"]).Where("v_timesheet_child_overtime.date BETWEEN ? AND ?", postdata["start_date"], postdata["end_date"]).Scan(&timesheet).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Record milestone not found!"})
 		return
 	}

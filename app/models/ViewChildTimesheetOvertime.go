@@ -7,6 +7,7 @@ type ViewChildTimesheetOvertime struct {
 	ChildId       string `json:"child_id"`
 	ChildFullName string `json:"child_full_name"`
 	BranchName    string `json:"branch_name"`
+	Date          string `json:"date"`
 	SchoolName    string `json:"school_name"`
 	ClockIn       string `json:"clock_in"`
 	ClockOut      string `json:"clock_out"`
