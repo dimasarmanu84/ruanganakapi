@@ -101,3 +101,14 @@ func (ctrl EducatorBranchController) Create(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "Success", "data": &educatorbranch})
 }
+
+func (ctrl EducatorBranchController) Delete(c *gin.Context) {
+	id := c.Param("id")
+
+	if err := ctrl.db.Delete(&models.SchTrxEducatorBranch{}, "educator_branch_id = ?", id).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Delete failed!"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post deleted successfully"})
+}
