@@ -76,5 +76,5 @@ func Decrypt(text, MySecret string) (string, error) {
 }
 
 type Header struct {
-	branchid string `header:"branchid" `
+	branchid *string `header:"branchid" `
 }

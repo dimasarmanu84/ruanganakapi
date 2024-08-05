@@ -27,7 +27,7 @@ func (ctrl LoginController) DoLogin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
 
-	if err := ctrl.db.Table("app_mst_admin_user").Where("admin_user_name = ?", useradmin.AdminUserName).Where("password_user = ?", useradmin.PasswordUser).First(&useradmin).Error; err != nil {
+	if err := ctrl.db.Table("app_mst_admin_user").Where("admin_user_name = ?", useradmin.AdminUserName).Where("admin_user_password = ?", useradmin.AdminUserPassword).First(&useradmin).Error; err != nil {
 		c.JSON(200, gin.H{"error": "Record not found!"})
 		return
 	}
