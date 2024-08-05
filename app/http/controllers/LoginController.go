@@ -21,24 +21,16 @@ func NewLoginController() *LoginController {
 
 func (ctrl LoginController) DoLogin(c *gin.Context) {
 
-	response := new(models.Response)
-
-	type NamedArgument struct {
-		v_user_name     string
-		v_user_password string
+	var useradmin models.AppMstAdminUser
+	// Parse the updated fields from the request body
+	if err := c.ShouldBindJSON(&useradmin); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 	}
 
-	query := "SELECT public.admin_do_login('admin','123456')"
-
-	var results []map[string]interface{}
-
-	err := NewMenuController().db.Raw(query).Scan(&results).Error
-	if err != nil {
-		response.Status = http.StatusBadRequest
-		response.Message = "Error"
-		response.Data = nil
-		c.JSON(200, response)
+	if err := ctrl.db.Table("app_mst_admin_user").Where("admin_user_name = ?", useradmin.AdminUserName).Where("password_user = ?", useradmin.PasswordUser).First(&useradmin).Error; err != nil {
+		c.JSON(200, gin.H{"error": "Record not found!"})
 		return
 	}
-	c.JSON(200, results)
+
+	c.JSON(http.StatusOK, gin.H{"error": false, "message": "Success", "data": &useradmin})
 }

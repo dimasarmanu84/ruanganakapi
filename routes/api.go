@@ -72,7 +72,7 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 	var LoginController = controllers.NewLoginController()
 	loginROute := router.Group("/login")
 	{
-		loginROute.GET("/dologin", LoginController.DoLogin)
+		loginROute.POST("/dologin", LoginController.DoLogin)
 	}
 
 	var TimesheetController = controllers.NewTimesheetController()

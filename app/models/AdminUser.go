@@ -20,6 +20,8 @@ type AppMstAdminUser struct {
 	AdminUserSession   string    `gorm:"column:admin_user_session" json:"admin_user_session"`
 	AdminUserLastLogin time.Time `gorm:"column:admin_user_last_login" json:"admin_user_last_login"`
 	AdminPhotoProfile  string    `gorm:"column:admin_photo_profile" json:"admin_photo_profile"`
+	BranchID           string    `gorm:"column:branch_id" json:"branch_id"`
+	PasswordUser       string    `gorm:"column:password_user" json:"password_user"`
 }
 
 // TableName AppMstAdminUser's table name

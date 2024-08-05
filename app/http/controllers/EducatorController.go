@@ -2,10 +2,12 @@ package controllers
 
 import (
 	"fmt"
+	"net/http"
 
 	pagination "github.com/Hironaga06/gorm-pagination"
 	"github.com/gin-gonic/gin"
 	"github.com/uzzalhcse/go-gin-gorm-mvc-boilerplate/app/models"
+	helper "github.com/uzzalhcse/go-gin-gorm-mvc-boilerplate/app/models"
 	"github.com/uzzalhcse/go-gin-gorm-mvc-boilerplate/bootstrap/app"
 	"gorm.io/gorm"
 )
@@ -21,7 +23,11 @@ func NewEducatorController() *EducatorController {
 }
 
 func (ctrl EducatorController) DataTable(c *gin.Context) {
-
+	header := &helper.Header{}
+	if err := c.ShouldBindHeader(header); err != nil {
+		c.JSON(http.StatusOK, gin.H{"error": true, "message": err.Error(), "data": nil})
+		return
+	}
 	var educator []models.ViewEducator
 
 	jsonData, err := c.GetRawData()
