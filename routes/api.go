@@ -18,12 +18,22 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 		menuRoutes.GET("/parentnot/:id", MenuController.GetParentNotId)
 	}
 
+	var UserAdminController = controllers.NewUserAdminController()
+	useradminRoutes := router.Group("/useradmin")
+	{
+		useradminRoutes.POST("/datatable", UserAdminController.DataTable)
+		useradminRoutes.POST("/insert", UserAdminController.Create)
+		useradminRoutes.POST("/update/:id", UserAdminController.Update)
+
+	}
+
 	var UserController = controllers.NewUserController()
 	userRoutes := router.Group("/users")
 	{
 		userRoutes.GET("/datatable", UserController.DataTable)
 		userRoutes.POST("/update/:id", UserController.Update)
 		userRoutes.POST("/updateotp/:id", UserController.UpdateOTP)
+		userRoutes.GET("/updatestatus/:id", UserController.UpdateStatus)
 	}
 
 	var RoleController = controllers.NewRolesController()
@@ -67,12 +77,13 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 	milestoneRoutes := router.Group("/milestone")
 	{
 		milestoneRoutes.POST("/report", MilestoneController.Edit)
+		milestoneRoutes.POST("/upload", MilestoneController.Upload)
 	}
 
 	var LoginController = controllers.NewLoginController()
-	loginROute := router.Group("/login")
+	loginRoute := router.Group("/login")
 	{
-		loginROute.POST("/dologin", LoginController.DoLogin)
+		loginRoute.POST("/dologin/:username/:password", LoginController.DoLogin)
 	}
 
 	var TimesheetController = controllers.NewTimesheetController()
@@ -86,6 +97,13 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 	{
 		timesheetEducatorRoutes.POST("/report", TimesheetEducatorController.Edit)
 	}
+
+	var ActivityController = controllers.NewActivityController()
+	activityRoutes := router.Group("/activity")
+	{
+		activityRoutes.POST("/report", ActivityController.Edit)
+	}
+
 	var ParentsController = controllers.NewParentsController()
 	parentRoutes := router.Group("/parent")
 	{
@@ -110,5 +128,23 @@ func SetupApiRoutes(router *gin.RouterGroup) {
 		educatorbranchController.GET("/branch/:id", EducatorBranchController.GetBranch)
 		educatorbranchController.POST("/insert", EducatorBranchController.Create)
 		educatorbranchController.POST("/delete/:id", EducatorBranchController.Delete)
+	}
+
+	var NewsController = controllers.NewNewsController()
+	newsRoutes := router.Group("/news")
+	{
+		newsRoutes.POST("/datatable", NewsController.DataTable)
+		newsRoutes.GET("/all", NewsController.GetAll)
+		newsRoutes.GET("/:id", NewsController.GetByID)
+		newsRoutes.POST("/insert", NewsController.Create)
+		newsRoutes.POST("/update/:id", NewsController.Update)
+		newsRoutes.DELETE("/delete/:id", NewsController.Delete)
+	}
+
+	var UploadController = controllers.NewUploadController()
+	uploadRoutes := router.Group("/upload")
+	{
+		uploadRoutes.POST("/news/image", UploadController.UploadNewsImage)
+		uploadRoutes.POST("/news/delete", UploadController.DeleteNewsImage)
 	}
 }
